@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// TO DO => REFACTOR THIS SHIT
+{/* TODO(Belal): Refactor signup */}
 
-// import '../assets/js/app';
-// import '../assets/data/tipuedrop_content.js';
-// import '../assets/js/signup';
 import '../assets/css/app.css';
 import '../assets/css/core.css';
 
@@ -21,32 +18,20 @@ import type3Image from "../assets/img/illustrations/signup/type-3.svg";
 import type3ImageBg from "../assets/img/illustrations/signup/type-3-bg.svg";
 import type3ImageBgDark from "../assets/img/illustrations/signup/type-3-bg-dark.svg";
 
+import { Smile, User, Image, Lock, Flag } from 'react-feather';
+import Wizard from './components/wizard';
+
+
 const HelloWorld = () => {
+    const steps = [
+        {progressComponent: <Smile />},
+        {progressComponent: <User />},
+        {progressComponent: <Image />}
+    ];
     return (
         <div className="signup-wrapper">
-            <div className="process-bar-wrap">
-                <div className="process-bar">
-                    <div className="progress-wrap">
-                        <div className="track"></div>
-                        <div className="bar"></div>
-                        <div id="step-dot-1" className="dot is-first is-active is-current" data-step="0">
-                            <i data-feather="smile"></i>
-                        </div>
-                        <div id="step-dot-2" className="dot is-second" data-step="25">
-                            <i data-feather="user"></i>
-                        </div>
-                        <div id="step-dot-3" className="dot is-third" data-step="50">
-                            <i data-feather="image"></i>
-                        </div>
-                        <div id="step-dot-4" className="dot is-fourth" data-step="75">
-                            <i data-feather="lock"></i>
-                        </div>
-                        <div id="step-dot-5" className="dot is-fifth" data-step="100">
-                            <i data-feather="flag"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/* TODO(Belal): Continue the integration of the wizard by adding page contents for each step */}
+            <Wizard steps={steps}/>
 
             <div className="outer-panel">
                 <div className="outer-panel-inner">

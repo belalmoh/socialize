@@ -1,7 +1,7 @@
 import 'css/app.css';
 import 'css/core.css';
 
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 
 import { Smile, User, Image } from 'react-feather';
 

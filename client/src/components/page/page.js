@@ -1,5 +1,4 @@
 import React from 'react';
-import Field from '../field/field';
 
 const Page = ({title, step, currentStep, onPrevClicked, onNextClicked, children}) => {
     const isCurrentStep = step === currentStep ? 'is-active' : '';

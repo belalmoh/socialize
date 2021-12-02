@@ -1,9 +1,30 @@
-const { gql } = require('apollo-server');
+const { makeSchema, asNexusMethod } = require('nexus');
 
-const typeDefs = gql`
-    type Query {
-        helloWorld: String!
-    }
-`;
+const { DateTimeResolver } = require('graphql-scalars');
+const DateTime = asNexusMethod(DateTimeResolver, 'date');
 
-module.exports = {typeDefs};
+const {Query, User} = require('./models');
+
+const schema = makeSchema({
+	types: [
+	  	Query,
+		User,
+		DateTime
+	],
+	outputs: {
+		schema: __dirname + '/../schema.graphql',
+		typegen: __dirname + '/generated/nexus.ts',
+	},
+	sourceTypes: {
+		modules: [
+			{
+				module: '@prisma/client',
+				alias: 'prisma',
+			},
+		],
+	},
+});
+  
+module.exports = {
+	schema: schema
+};

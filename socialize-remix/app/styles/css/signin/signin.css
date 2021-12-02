@@ -1,0 +1,22 @@
+.form-title, .form-subtitle {
+  color: #fafafa; }
+
+.signup-wrapper .login-form .field .control .input {
+  height: 40px;
+  padding-left: 40px; }
+
+.signup-wrapper .login-form .field .control .input-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.login-form .field .control .input-icon svg {
+  height: 18px;
+  width: 18px;
+  stroke: #cecece;
+  transition: stroke .3s; }

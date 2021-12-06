@@ -1,4 +1,5 @@
 import { Link } from 'remix';
+import Input from '~/components/input';
 // CatchBoundary and ErrorBoundary
 
 export const meta = () => {
@@ -15,41 +16,23 @@ export default function App() {
  
 const Signup = () => {
     return (
-        <div className="signup-wrapper">
-            <div className="container">
-                
-                <div className="login-container is-centered">
-                    <div className="columns is-vcentered">
-                        <div className="column">
-
-                            <h2 className="form-title has-text-centered">Password Recovery</h2>
-
-                            <div className="login-form">
-                                <div className="form-panel">
-                                    <div className="columns is-multiline">
-                                        <div className="column is-12">
-                                            <div className="field">
-                                                <label>Email</label>
-                                                <div className="control">
-                                                    <input type="text" className="input" placeholder="Enter your email address" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="buttons mt-6">
-                                    <a className="button is-solid primary-button is-fullwidth raised">Reset Password</a>
-                                </div>
-
-                                <div className="account-link has-text-centered">
-                                    <Link to="/signin">Have an account? Sign In</Link>
-                                </div>
-                            </div>
+        <div className={`bg-gradient-to-r from-blue-500 via-purple-600 to-purple-800 h-screen py-28`}>
+            <header className="max-w-lg mx-auto">
+                <Link to="/">
+                    <h1 className="text-4xl font-bold text-white text-center">Socialize</h1>
+                </Link>
+            </header>
+            <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
+                <section className="mt-10">
+                    <form className="flex flex-col" method="POST" action="#">
+                        <div className="mb-6 pt-3 rounded bg-gray-200">
+                            <label className="block text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="email">Email</label>
+                            <Input type="text" id="email" autoComplete={'none'} />
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Recover my account</button>
+                    </form>
+                </section>
+            </main>
         </div>
     );
 };

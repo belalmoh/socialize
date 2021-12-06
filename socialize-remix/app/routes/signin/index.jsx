@@ -1,10 +1,5 @@
-import { useQuery, gql } from '@apollo/client';
-import {User, Lock} from 'react-feather';
 import { Link } from 'remix';
-
-import LoginDarkImage from '~/img/signin/login-dark.svg';
-
-import SigninStyle from '~/styles/css/signin/signin.css';
+import Input from '~/components/input';
 
 // CatchBoundary and ErrorBoundary
 
@@ -14,91 +9,47 @@ export const meta = () => {
     };
 };
 
-export function links() {    
-    return [
-        { rel: "stylesheet", href: SigninStyle },
-    ];
-};
-
-const CHARACTERS_QUERY = gql`
-    query ExampleQuery {
-        Users {
-            id
-            firstName
-            lastName
-            email
-        }
-    }
-`;
-
 export default function App() {
-    const {data} = useQuery(CHARACTERS_QUERY);
-    console.log(data);
     return (
         <Signin />
     );
 }
- 
+
 const Signin = () => {
     return (
-        <div className="signup-wrapper">
+        <div className={`bg-gradient-to-r from-blue-500 via-purple-600 to-purple-800 h-screen py-28`}>
+            <header className="max-w-lg mx-auto">
+                <Link to="/">
+                    <h1 className="text-4xl font-bold text-white text-center">Socialize</h1>
+                </Link>
+            </header>
 
-            <div className="container">
-                <div className="login-container">
-                    <div className="columns is-vcentered">
-                        <div className="column is-6 image-column">
-                            <img className="dark-image login-image" src={LoginDarkImage} alt="" />
+            <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
+                <section>
+                    <h3 className="font-bold text-2xl">Welcome to Socialize</h3>
+                    <p className="text-gray-600 pt-2">Sign in to your account.</p>
+                </section>
+
+                <section className="mt-10">
+                    <form className="flex flex-col" method="POST" action="#">
+                        <div className="mb-6 pt-3 rounded bg-gray-200">
+                            <label className="block text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="email">Email</label>
+                            <Input type="text" id="email" autoComplete={'off'} />
                         </div>
-                        <div className="column is-6">
-
-                            <h2 className="form-title">Welcome Back</h2>
-                            <h3 className="form-subtitle">Enter your credentials to sign in.</h3>
-
-                            <div className="login-form">
-                                <div className="form-panel">
-                                    <div className="field">
-                                        <label>Email</label>
-                                        <div className="control">
-                                            <input type="text" className="input" placeholder="Enter your email address" />
-                                            <div className="input-icon">
-                                                <User />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="field">
-                                        <label>Password</label>
-                                        <div className="control">
-                                            <input type="password" className="input" placeholder="Enter your password" />
-                                            <div className="input-icon">
-                                                <Lock />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="field is-flex">
-                                        <div className="switch-block">
-                                            <label className="f-switch">
-                                                <input type="checkbox" className="is-switch" />
-                                                <i></i>
-                                            </label>
-                                            <div className="meta">
-                                                <p>Remember me?</p>
-                                            </div>
-                                        </div>
-                                        <Link to="/forgot-password">Forgot password</Link>
-                                    </div>
-                                </div>
-
-                                <div className="buttons">
-                                    <a className="button is-solid primary-button is-fullwidth raised">Login</a>
-                                </div>
-
-                                <div className="account-link has-text-centered">
-                                    <Link to="/signup">Don't have an account? Sign Up</Link>
-                                </div>
-                            </div>
+                        <div className="mb-6 pt-3 rounded bg-gray-200">
+                            <label className="block text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="password">Password</label>
+                            <Input type="password" id="password" autoComplete={'off'} />
                         </div>
-                    </div>
-                </div>
+                        <div className="flex justify-end">
+                            <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6">Forgot your password?</Link>
+                        </div>
+                        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Sign In</button>
+                    </form>
+                </section>
+            </main>
+
+            <div className="max-w-lg mx-auto text-center mt-12 mb-6">
+                <p className="text-white">Don't have an account? <Link to="/signup" className="font-bold hover:underline">Sign up</Link>.</p>
             </div>
         </div>
     );

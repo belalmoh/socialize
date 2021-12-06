@@ -4,7 +4,7 @@
   "description": "",
   "license": "",
   "scripts": {
-    "dev:css": "node-sass -w app/styles/scss -o app/styles/css",
+    "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
     "build": "remix build",
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "postinstall": "remix setup node",
@@ -24,7 +24,8 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^1.0.6",
-    "prisma": "^3.5.0"
+    "prisma": "^3.5.0",
+    "tailwindcss": "^2.2.19"
   },
   "engines": {
     "node": ">=14"

@@ -3,12 +3,18 @@ const { makeSchema, asNexusMethod } = require('nexus');
 const { DateTimeResolver } = require('graphql-scalars');
 const DateTime = asNexusMethod(DateTimeResolver, 'date');
 
-const {Query, User} = require('./models');
+const {Query} = require('./models');
+
+const { UserMutation, UserType, UserInputType } = require('./models/User');
 
 const schema = makeSchema({
 	types: [
 	  	Query,
-		User,
+		
+		UserMutation,
+		UserType,
+		UserInputType,
+
 		DateTime
 	],
 	outputs: {

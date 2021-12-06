@@ -7,6 +7,10 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type Mutation {
+  createUser(data: UserInputType!): User
+}
+
 type Query {
   Users: [User!]!
 }
@@ -16,5 +20,13 @@ type User {
   firstName: String!
   id: Int!
   lastName: String!
-  name: String
+  password: String!
+  token: String
+}
+
+input UserInputType {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
 }

@@ -1,7 +1,37 @@
-import { Link } from 'remix';
-import Input from '~/components/input';
+import { useState } from 'react';
+import { Link, Form, useActionData, useTransition, redirect } from 'remix';
 
-// CatchBoundary and ErrorBoundary
+import FormField from '~/components/form-field';
+
+import { loginUser } from '~/models/user';
+import { userCookies, isLoggedIn } from '~/utils/cookies';
+
+export async function loader ({request}) {
+    if(isLoggedIn(request.headers.get('cookie'))) {
+        return redirect("/");
+    }
+    return null;
+}
+
+export const action = async ({ request }) => {
+    try {
+        const formData = await request.formData();
+      
+        const email = formData.get("email");
+        const password = formData.get("password");
+        const result = await loginUser(email, password);
+        return redirect('/', {
+            headers: {
+                "Set-Cookie": (await userCookies.serialize({...result.data.loginUser, isLoggedIn: true})) || {}
+            }
+        });
+    } catch (error) {
+        return {
+            error: true,
+            errorText: 'Invalid Credentials',
+        }
+    }
+}
 
 export const meta = () => {
     return {
@@ -16,6 +46,21 @@ export default function App() {
 }
 
 const Signin = () => {
+    const actionData = useActionData();
+    const transition = useTransition();
+
+    const [invalidFields, setInvalidFields] = useState([]);
+
+    const handleOnInvalid = (e) => {
+        if(invalidFields.indexOf(e.target.name) === -1)
+            setInvalidFields([...invalidFields, e.target.name]);
+    }
+
+    const handleOnChange = (e) => {
+        let fields = invalidFields.filter(f => f !== e.target.name);
+        setInvalidFields(fields);
+    }
+
     return (
         <div className={`bg-gradient-to-r from-blue-500 via-purple-600 to-purple-800 h-screen py-28`}>
             <header className="max-w-lg mx-auto">
@@ -31,20 +76,44 @@ const Signin = () => {
                 </section>
 
                 <section className="mt-10">
-                    <form className="flex flex-col" method="POST" action="#">
-                        <div className="mb-6 pt-3 rounded bg-gray-200">
-                            <label className="block text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="email">Email</label>
-                            <Input type="text" id="email" autoComplete={'off'} />
-                        </div>
-                        <div className="mb-6 pt-3 rounded bg-gray-200">
-                            <label className="block text-gray-700 text-sm font-bold mb-2 ml-3" htmlFor="password">Password</label>
-                            <Input type="password" id="password" autoComplete={'off'} />
-                        </div>
+                    <Form className="flex flex-col" method="POST">
+
+                        <FormField 
+                            label={`Email`} 
+                            inputFieldProps={{
+                                type:"email",
+                                name:"email",
+                                id:"email",
+                                autoComplete:'off',
+                                required: true,
+                                onInvalid: handleOnInvalid,
+                                onChange: handleOnChange,
+                            }}
+                            isInvalid={invalidFields.indexOf("email") !== -1}
+                        />
+
+                        <FormField 
+                            label={`Password`} 
+                            inputFieldProps={{
+                                type:"password",
+                                name:"password",
+                                id:"password",
+                                autoComplete:'off',
+                                required: true,
+                                onInvalid: handleOnInvalid,
+                                onChange: handleOnChange,
+                            }}
+                            isInvalid={invalidFields.indexOf("password") !== -1}
+                        />
+
                         <div className="flex justify-end">
                             <Link to="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700 hover:underline mb-6">Forgot your password?</Link>
                         </div>
-                        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Sign In</button>
-                    </form>
+
+                        <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 h-14 flex justify-center items-center" type="submit">
+                            {transition?.state === 'submitting' ? <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> : "Sign In"}
+                        </button>
+                    </Form>
                 </section>
             </main>
 

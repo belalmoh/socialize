@@ -1,13 +1,9 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { TOKEN_SECRET, AUTH_EXPIRATION_PERIOD, ITERATIONS, KEY_LEN, DIGEST } = require('../../config');
+const { PASSWORD_SALT, TOKEN_SECRET, AUTH_EXPIRATION_PERIOD, ITERATIONS, KEY_LEN, DIGEST } = require('../../config');
 
-const generateSalt = () => crypto.randomBytes(16).toString('hex');
-
-const Salt = generateSalt();
-
-const generateUserToken = (user) => {
-    const token = jwt.sign(user, TOKEN_SECRET, {
+const generateUserToken = (email) => {
+    const token = jwt.sign({email}, TOKEN_SECRET, {
         expiresIn: AUTH_EXPIRATION_PERIOD
     });
 
@@ -15,12 +11,29 @@ const generateUserToken = (user) => {
 }
 
 const generatePasswordHash = (password) => {
-    const hash = crypto.pbkdf2Sync(password, Salt ?? generateSalt, ITERATIONS, KEY_LEN, DIGEST).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, PASSWORD_SALT, ITERATIONS, KEY_LEN, DIGEST).toString('hex');
 
     return hash;
 }
 
+const isValidPassword = (password) => {
+    const hashedPassword = generatePasswordHash(password);
+
+    return hashedPassword === password;
+}
+
+const isValidToken = async (token) => {
+    try {
+        const isValid = await jwt.verify(token, TOKEN_SECRET);
+        return isValid;
+    } catch (Err) {
+        throw Err;
+    }
+}
+
 module.exports = {
     generateUserToken,
-    generatePasswordHash
+    generatePasswordHash,
+    isValidToken,
+    isValidPassword
 };

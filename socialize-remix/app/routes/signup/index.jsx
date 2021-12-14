@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, Form, useActionData, useTransition, redirect, createCookie } from 'remix';
 
 import { createUser } from '~/models/user';
@@ -6,13 +6,20 @@ import { createUser } from '~/models/user';
 import FormField from '~/components/form-field';
 import { ErrorAlert } from '~/components/alerts';
 
-import { userCookies } from '~/utils/cookies';
+import { userCookies, isLoggedIn } from '~/utils/cookies';
 
 export const meta = () => {
     return {
         title: "Signup"
     };
 };
+
+export async function loader ({request}) {
+    if(isLoggedIn(request.headers.get('cookie'))) {
+        return redirect("/");
+    }
+    return null;
+}
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
@@ -52,7 +59,7 @@ export const action = async ({ request }) => {
     // should redirect to /
     return redirect('/', {
         headers: {
-            "Set-Cookie": (await userCookies.serialize({userToken: result.data.createUser.token, isLoggedIn: true})) || {}
+            "Set-Cookie": (await userCookies.serialize({...result.data.createUser, isLoggedIn: true})) || {}
         }
     });
 };

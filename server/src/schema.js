@@ -1,6 +1,7 @@
 const { makeSchema, asNexusMethod } = require('nexus');
 
 const { DateTimeResolver } = require('graphql-scalars');
+
 const DateTime = asNexusMethod(DateTimeResolver, 'date');
 
 const {Query} = require('./models');
@@ -15,7 +16,7 @@ const schema = makeSchema({
 		UserType,
 		UserInputType,
 
-		DateTime
+		DateTime,
 	],
 	outputs: {
 		schema: __dirname + '/../schema.graphql',

@@ -9,10 +9,11 @@ scalar DateTime
 
 type Mutation {
   createUser(data: UserInputType!): User
+  loginUser(data: UserInputType!): User
 }
 
 type Query {
-  Users: [User!]!
+  IsValidToken(token: String!): Boolean!
 }
 
 type User {

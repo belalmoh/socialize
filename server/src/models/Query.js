@@ -1,16 +1,22 @@
 const {
-    objectType
+    queryType, nonNull, stringArg, inputObjectType
 } = require('nexus');
 
-const Query = objectType({
-    name: 'Query',
+const Query = queryType({
     definition(t) {
-        t.nonNull.list.nonNull.field('Users', {
-            type: 'User',
-            resolve: (_parent, _args, context) => {
-                return context.prisma.user.findMany();
+        t.nonNull.boolean('IsValidToken', {
+            args: {
+                token: nonNull(stringArg())
             },
-        });
+            resolve: async (_, { token }, context, info) => {
+                try {
+                    const isValid = await context.auth.isValidToken(token);
+                    return true;
+                } catch (error) {
+                    return false;
+                }
+            }
+        })
     }
 });
 

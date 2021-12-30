@@ -52,16 +52,24 @@ const UserMutation = objectType({
                 data: nonNull(arg({type: 'UserInputType'}))
             },
             resolve: async (_, {data: {email, password}}, context) => {
-                const userObject = await context.prisma.user.update({
+                const userExists = await context.prisma.user.findUnique({
                     where: {
                         email
-                    },
-                    data: {
-                        token: context.auth.generateUserToken(email)
                     }
                 });
-                if(userObject?.password == context.auth.generatePasswordHash(password)) {
-                    return userObject;
+
+                if(userExists && context.auth.generatePasswordHash(password) == userExists.password) {
+                    const newUserToken = await context.prisma.user.update({
+                        where: {
+                            email
+                        },
+                        data: {
+                            token: context.auth.generateUserToken(email)
+                        }
+                    });
+                    if(newUserToken) {
+                        return newUserToken;
+                    }
                 }
                 throw new AuthenticationError("Invalid credentials");
             }

@@ -7,7 +7,8 @@ import { loginUser } from '~/models/user';
 import { userCookies, isLoggedIn } from '~/utils/cookies';
 
 export async function loader ({request}) {
-    if(isLoggedIn(request.headers.get('cookie'))) {
+    const userToken = await isLoggedIn(request.headers.get('cookie'))
+    if(userToken) {
         return redirect("/");
     }
     return null;

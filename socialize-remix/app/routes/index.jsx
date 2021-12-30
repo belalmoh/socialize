@@ -1,12 +1,8 @@
 import { useLoaderData, redirect } from 'remix';
-
-import Signin from './signin';
-
 import { userCookies } from '~/utils/cookies';
-
 import { validateToken } from '~/models/user'
 
-// CatchBoundary and ErrorBoundary
+import Header from '~/components/header';
 
 export async function loader ({ request }) {
     const cookieHeader = request.headers.get('cookie');
@@ -24,10 +20,7 @@ export async function loader ({ request }) {
 export default function App() {
     const data = useLoaderData();
 
-    // console.log(data);
     return (
-        <div>
-            Hello World
-        </div>
+        <Header />
     );
 };

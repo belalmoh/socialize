@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "socialize": "apps/socialize",
+    "socialize-e2e": "apps/socialize-e2e"
+  }
+}

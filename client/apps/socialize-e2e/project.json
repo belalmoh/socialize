@@ -1,0 +1,28 @@
+{
+  "root": "apps/socialize-e2e",
+  "sourceRoot": "apps/socialize-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/socialize-e2e/cypress.json",
+        "devServerTarget": "socialize:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "socialize:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/socialize-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["socialize"]
+}

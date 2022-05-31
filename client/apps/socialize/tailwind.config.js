@@ -1,12 +1,14 @@
+// apps/app1/tailwind.config.js
+const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
+const { join } = require('path');
+
+const {theme, plugins} = require("../../tailwind-workspace-preset");
+
 module.exports = {
   content: [
-    "apps/socialize/pages/**/*.{js,ts,jsx,tsx}",
-    "apps/socialize/components/**/*.{js,ts,jsx,tsx}",
+    join(__dirname, '(pages|components)/**/!(*.stories|*.spec).{js,jsx}'),
+    ...createGlobPatternsForDependencies(__dirname),
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    require('@tailwindcss/typography')
-  ],
-}
+  theme,
+  plugins
+};

@@ -1,18 +1,21 @@
-import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
+import { SessionProvider } from 'next-auth/react'
+// import './styles.scss';
+import 'tailwindcss/tailwind.css';
 
-function CustomApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <title>Welcome to socialize!</title>
-      </Head>
-      <main className="app">
-        <Component {...pageProps} />
-      </main>
-    </>
-  );
+function CustomApp({ Component, pageProps: { session, ...pageProps } }) {
+	return (
+		<>
+			<Head>
+				<title>Welcome to socialize!</title>
+			</Head>
+			<main className="app">
+				<SessionProvider session={session}>
+					<Component {...pageProps} />
+				</SessionProvider>
+			</main>
+		</>
+	);
 }
 
 export default CustomApp;
